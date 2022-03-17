@@ -1,0 +1,26 @@
+import requests      # Библиотека для отправки запросов
+import numpy as np   # Библиотека для матриц, векторов и линала
+import pandas as pd  # Библиотека для табличек
+import time          # Библиотека для тайм-менеджмента
+from bs4 import BeautifulSoup as bs
+from fake_useragent import UserAgent
+#симулируем подключение хромом
+UserAgent().chrome
+
+#откуда парсим
+page_link = 'https://yandex.ru'
+#проверяем работоспособность имитации
+response = requests.get(page_link, headers={'User-Agent': UserAgent().chrome})
+#печатаем ответ сервера, 200 - ок, 403 - блок
+print(response)
+#переводим ссылку в beautiful soup формат
+url = requests.get(page_link)
+html = bs(url.text, 'html.parser')
+#Ищем нужную хурму
+a = html.find_all('span', class_="news__item-content")
+#Печатаем по отдельной строке
+for el in range(len(a)):
+    print(a[el].text)
+#проверяем ответ и интерпритацию, в случае, если парсер не сработал
+for key, value in response.request.headers.items():
+    print(key+": "+value)

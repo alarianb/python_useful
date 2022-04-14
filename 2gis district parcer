@@ -1,0 +1,17 @@
+# coding=utf8
+import requests
+import json
+
+headers = {'user-agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:41.0) Gecko/20100101 Firefox/41.0'}
+
+#Создаем функцию получения данных по адресу
+def getDataFromAddress(address):
+    address = '%20'.join('%2C'.join(address.split(',')).split(' ')) #Получаем адрес, заменяем запятые на %2C, а пробелы на %20
+    link = 'https://catalog.api.2gis.com/3.0/items/geocode?q='+address+'&fields=items.adm_div&key=APIKEY'# передаем предобработанный адрес в запрос
+    answer = requests.get(link, headers=headers) # делаем запрос
+    return json.loads(answer.content.decode('utf-8')) # возвращаем ответ в виде json
+
+
+a = []
+for item in range(len(a)):
+    print(getDataFromAddress(a[item]))
